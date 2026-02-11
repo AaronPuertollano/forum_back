@@ -1,8 +1,10 @@
 package com.esliceu.Myforum.controller;
 
+import com.esliceu.Myforum.dto.UserDTO;
 import com.esliceu.Myforum.filter.PasswordConverter;
 import com.esliceu.Myforum.model.User;
 import com.esliceu.Myforum.repo.UserRepository;
+import com.esliceu.Myforum.service.JWTService;
 import com.esliceu.Myforum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,9 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JWTService jwtService;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
@@ -37,11 +42,12 @@ public class AuthController {
             return ResponseEntity.status(401).body("Invalid credentials");
         }
 
-        try {
-            String hashedInputPassword =
-                    PasswordConverter.hashPassword(data.get("password"));
+        User user = userOpt.get();
 
-            if (!userOpt.get().getPassword().equals(hashedInputPassword)) {
+        try {
+            String passwordHashed = PasswordConverter.hashPassword(data.get("password"));
+
+            if (!userOpt.get().getPassword().equals(passwordHashed)) {
                 return ResponseEntity.status(401).body("Invalid credentials");
             }
 
@@ -49,7 +55,15 @@ public class AuthController {
             return ResponseEntity.status(500).body("Password error");
         }
 
-        return ResponseEntity.ok(userOpt.get());
+        String token = jwtService.generateToken(user);
+
+
+        UserDTO userDTO = new UserDTO(user);
+
+        return ResponseEntity.ok(Map.of(
+                "token", token,
+                "user", userDTO
+        ));
     }
 }
 
