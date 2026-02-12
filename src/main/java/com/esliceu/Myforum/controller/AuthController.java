@@ -6,6 +6,7 @@ import com.esliceu.Myforum.model.User;
 import com.esliceu.Myforum.repo.UserRepository;
 import com.esliceu.Myforum.service.JWTService;
 import com.esliceu.Myforum.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
+        //MODIFICAR TODOS DEBEN DE TENER PERMISOS COMO ADMINISTRADORES
 
         if (userService.findByEmail(user.getEmail()).isPresent()) {
             return ResponseEntity.badRequest().body("Email already exists");
@@ -65,5 +67,24 @@ public class AuthController {
                 "user", userDTO
         ));
     }
+
+    @GetMapping("/getprofile")
+    public ResponseEntity<?> getProfile(HttpServletRequest request) {
+
+        String email = (String) request.getAttribute("email");
+
+        if (email == null) {
+            return ResponseEntity.status(401).body("Unauthorized");
+        }
+
+        return userService.findByEmail(email)
+                .map(user -> {
+                    UserDTO dto = new UserDTO(user);
+                    return ResponseEntity.ok(dto);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+
 }
 
