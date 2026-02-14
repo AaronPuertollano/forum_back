@@ -39,24 +39,19 @@ public class ProfileController {
 
         User user = userOpt.get();
 
-        // Actualizar campos si vienen en el body
         if (body.containsKey("name")) {
             user.setName(body.get("name"));
         }
+
         if (body.containsKey("email")) {
-            // Opcional: validar que no exista otro usuario con ese email
-            String newEmail = body.get("email");
-            if (!newEmail.equals(user.getEmail()) && userService.findByEmail(newEmail).isPresent()) {
-                return ResponseEntity.badRequest().body("Email already in use");
-            }
-            user.setEmail(newEmail);
+            user.setEmail(body.get("email"));
         }
 
         userService.save(user);
 
         UserDTO dto = new UserDTO(user);
         return ResponseEntity.ok(Map.of(
-                "token", jwtService.generateToken(user), // actualizar token con nuevo email
+                "token", jwtService.generateToken(user),
                 "user", dto
         ));
     }

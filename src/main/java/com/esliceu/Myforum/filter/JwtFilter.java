@@ -28,14 +28,14 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String path = request.getRequestURI();
 
-        if (path.equals("/login") || path.equals("/register")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+        boolean isPublic =
+                path.equals("/login") ||
+                        path.equals("/register") ||
+                        request.getMethod().equalsIgnoreCase("OPTIONS");
 
         String authHeader = request.getHeader("Authorization");
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+        if (!isPublic && authHeader != null && authHeader.startsWith("Bearer ")) {
 
             String token = authHeader.substring(7);
 
@@ -48,11 +48,9 @@ public class JwtFilter extends OncePerRequestFilter {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
-        } else {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
         }
 
+        // Si es pública, o no hay token, continúa
         filterChain.doFilter(request, response);
     }
 }

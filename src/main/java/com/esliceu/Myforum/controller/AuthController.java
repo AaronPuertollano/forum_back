@@ -26,13 +26,21 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
-        //MODIFICAR TODOS DEBEN DE TENER PERMISOS COMO ADMINISTRADORES
 
         if (userService.findByEmail(user.getEmail()).isPresent()) {
             return ResponseEntity.badRequest().body("Email already exists");
         }
 
+        try {
+            user.setPassword(
+                    PasswordConverter.hashPassword(user.getPassword())
+            );
+        } catch (NoSuchAlgorithmException e) {
+            return ResponseEntity.status(500).body("Password error");
+        }
+
         userService.save(user);
+
         return ResponseEntity.ok(user);
     }
 

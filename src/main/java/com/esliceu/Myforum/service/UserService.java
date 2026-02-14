@@ -20,12 +20,6 @@ public class UserService {
     }
 
     public User save(User user) {
-        try {
-            String hashedPassword = PasswordConverter.hashPassword(user.getPassword());
-            user.setPassword(hashedPassword);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Error hashing password", e);
-        }
         return userRepository.save(user);
     }
 }
