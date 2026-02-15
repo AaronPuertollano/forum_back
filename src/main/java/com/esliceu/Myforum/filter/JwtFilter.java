@@ -29,8 +29,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
 
         boolean isPublic =
-                path.equals("/login") ||
-                        path.equals("/register") ||
+                path.equals("/login") || path.equals("/register") || path.startsWith("/categories") ||
                         request.getMethod().equalsIgnoreCase("OPTIONS");
 
         String authHeader = request.getHeader("Authorization");
@@ -50,7 +49,6 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
-        // Si es pública, o no hay token, continúa
         filterChain.doFilter(request, response);
     }
 }
