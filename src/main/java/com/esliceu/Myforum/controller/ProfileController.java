@@ -78,14 +78,14 @@ public class ProfileController {
         String newPassword = body.get("newPassword");
 
         try {
-            // Hashea la contraseña enviada y compara
+            // Hashea la contraseña enviada
             String hashedCurrent = PasswordConverter.hashPassword(currentPassword);
 
             if (!user.getPassword().equals(hashedCurrent)) {
                 return ResponseEntity.status(400).body("Current password is incorrect");
             }
 
-            // Hashea la nueva contraseña y guarda
+            // Hashea la nueva contraseña
             String hashedNew = PasswordConverter.hashPassword(newPassword);
             user.setPassword(hashedNew);
             userService.save(user);

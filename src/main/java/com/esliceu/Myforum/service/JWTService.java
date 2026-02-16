@@ -31,7 +31,9 @@ public class JWTService {
                                 "own_topics:write",
                                 "own_topics:delete",
                                 "own_replies:write",
-                                "own_replies:delete"
+                                "own_replies:delete",
+                                "categories:write",
+                                "categories:delete"
                         ),
                         "categories", List.of()
                 ))
