@@ -37,4 +37,12 @@ public class CategoryController {
         return ResponseEntity.ok(new CategoryDTO(category));
     }
 
+    @GetMapping("/{slug}")
+    public ResponseEntity<CategoryDTO> getCategoryBySlug(
+            @PathVariable String slug) {
+
+        Category category = categoryService.getBySlug(slug);
+        return ResponseEntity.ok(new CategoryDTO(category));
+    }
+
 }

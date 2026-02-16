@@ -39,4 +39,10 @@ public class CategoryService {
                 .replaceAll("\\s+", "-");
     }
 
+    public Category getBySlug(String slug) {
+
+        return categoryRepository.findBySlug(slug)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+    }
+
 }
