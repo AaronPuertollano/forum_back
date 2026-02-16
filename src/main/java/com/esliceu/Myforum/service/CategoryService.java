@@ -25,7 +25,19 @@ public class CategoryService {
         Category category = new Category();
         category.setTitle(request.getTitle());
         category.setDescription(request.getDescription());
-        category.setSlug(generateSlug(request.getTitle()));
+
+        String baseSlug = generateSlug(request.getTitle());
+        String finalSlug = baseSlug;
+
+        int counter = 1;
+
+        while (categoryRepository.findBySlug(finalSlug).isPresent()) {
+            finalSlug = baseSlug + "-" + counter;
+            counter++;
+        }
+
+        category.setSlug(finalSlug);
+
         category.setColor("#" + new Random().nextInt(0xffffff));
         category.setModerators(new ArrayList<>());
 
