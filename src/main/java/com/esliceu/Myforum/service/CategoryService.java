@@ -4,10 +4,13 @@ import com.esliceu.Myforum.dto.CreateCategoryDTO;
 import com.esliceu.Myforum.model.Category;
 import com.esliceu.Myforum.repo.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -55,6 +58,30 @@ public class CategoryService {
 
         return categoryRepository.findBySlug(slug)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
+    }
+
+    public Category updateCategory(String slug, CreateCategoryDTO request) {
+
+        Category category = categoryRepository.findBySlug(slug)
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found")
+                );
+
+        category.setTitle(request.getTitle());
+        category.setDescription(request.getDescription());
+
+        return categoryRepository.save(category);
+    }
+
+    public boolean deleteCategory(String slug) {
+        Optional<Category> categoryOpt = categoryRepository.findBySlug(slug);
+
+        if (categoryOpt.isPresent()) {
+            categoryRepository.delete(categoryOpt.get());
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
