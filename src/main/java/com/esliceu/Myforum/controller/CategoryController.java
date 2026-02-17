@@ -2,7 +2,7 @@ package com.esliceu.Myforum.controller;
 
 import com.esliceu.Myforum.dto.CategoryDTO;
 import com.esliceu.Myforum.dto.CreateCategoryDTO;
-import com.esliceu.Myforum.dto.TopicDTO;
+import com.esliceu.Myforum.dto.TopicResponseDTO;
 import com.esliceu.Myforum.model.Category;
 import com.esliceu.Myforum.service.CategoryService;
 import com.esliceu.Myforum.service.TopicService;
@@ -67,11 +67,11 @@ public class CategoryController {
     }
 
     @GetMapping("/{slug}/topics")
-    public ResponseEntity<List<TopicDTO>> getTopicsByCategory(@PathVariable String slug) {
+    public ResponseEntity<List<TopicResponseDTO>> getTopicsByCategory(@PathVariable String slug) {
 
-        List<TopicDTO> topics = topicService.getTopicsByCategorySlug(slug)
+        List<TopicResponseDTO> topics = topicService.getTopicsByCategorySlug(slug)
                 .stream()
-                .map(TopicDTO::new)
+                .map(TopicResponseDTO::new)
                 .toList();
 
         return ResponseEntity.ok(topics);

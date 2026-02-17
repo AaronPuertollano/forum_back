@@ -2,7 +2,6 @@ package com.esliceu.Myforum.controller;
 
 
 import com.esliceu.Myforum.dto.CreateTopicDTO;
-import com.esliceu.Myforum.dto.TopicDTO;
 import com.esliceu.Myforum.dto.TopicResponseDTO;
 import com.esliceu.Myforum.model.Topic;
 import com.esliceu.Myforum.service.TopicService;
@@ -31,11 +30,11 @@ public class TopicController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TopicDTO> getTopicById(@PathVariable Long id) {
+    public ResponseEntity<TopicResponseDTO> getTopicById(@PathVariable Long id) {
 
         Topic topic = topicService.getTopicById(id);
 
-        return ResponseEntity.ok(new TopicDTO(topic));
+        return ResponseEntity.ok(new TopicResponseDTO(topic));
     }
 
 }
