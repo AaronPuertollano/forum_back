@@ -9,7 +9,6 @@ public class TopicResponseDTO {
 
     @JsonProperty("_id")
     private Long id;
-
     private String title;
     private String content;
     private Long category;

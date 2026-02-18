@@ -1,8 +1,8 @@
 package com.esliceu.Myforum.controller;
 
 
-import com.esliceu.Myforum.dto.CreateTopicDTO;
-import com.esliceu.Myforum.dto.TopicResponseDTO;
+import com.esliceu.Myforum.dto.*;
+import com.esliceu.Myforum.model.Category;
 import com.esliceu.Myforum.model.Topic;
 import com.esliceu.Myforum.service.TopicService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,11 +30,28 @@ public class TopicController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TopicResponseDTO> getTopicById(@PathVariable Long id) {
+    public ResponseEntity<TopicDetailDTO> getTopicById(@PathVariable Long id) {
 
         Topic topic = topicService.getTopicById(id);
 
-        return ResponseEntity.ok(new TopicResponseDTO(topic));
+        return ResponseEntity.ok(new TopicDetailDTO(topic));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> deleteTopic(@PathVariable Long id) {
+
+        boolean deleted = topicService.deleteTopic(id);
+        return ResponseEntity.ok(deleted);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TopicResponseDTO> updateTopic(){
+        return null;
+    }
+
+
+
+
+
 
 }

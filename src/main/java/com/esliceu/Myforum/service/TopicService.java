@@ -69,4 +69,14 @@ public class TopicService {
 
         return topic;
     }
+
+    public boolean deleteTopic(Long id) {
+        Optional<Topic> topicOpt = topicRepository.findById(id);
+
+        if (topicOpt.isPresent()) {
+            topicRepository.delete(topicOpt.get());
+            return true;
+        }
+        return false;
+    }
 }
