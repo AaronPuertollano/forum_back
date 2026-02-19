@@ -1,6 +1,7 @@
 package com.esliceu.Myforum.service;
 
 import com.esliceu.Myforum.dto.CreateTopicDTO;
+import com.esliceu.Myforum.dto.UpdateTopicDTO;
 import com.esliceu.Myforum.model.Category;
 import com.esliceu.Myforum.model.Topic;
 import com.esliceu.Myforum.model.User;
@@ -78,5 +79,24 @@ public class TopicService {
             return true;
         }
         return false;
+    }
+
+    public Topic updateTopic(Long id, UpdateTopicDTO request, String email) {
+
+        Topic topic = topicRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Topic not found")
+                );
+
+        Category category = categoryRepository.findBySlug(request.getCategory())
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found")
+                );
+
+        topic.setTitle(request.getTitle());
+        topic.setContent(request.getContent());
+        topic.setCategory(category);
+
+        return topicRepository.save(topic);
     }
 }

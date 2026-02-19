@@ -45,12 +45,17 @@ public class TopicController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TopicResponseDTO> updateTopic(){
-        return null;
+    public ResponseEntity<TopicDetailDTO> updateTopic(
+            @PathVariable Long id,
+            @RequestBody UpdateTopicDTO request,
+            HttpServletRequest httpRequest) {
+
+        String email = (String) httpRequest.getAttribute("email");
+
+        Topic topic = topicService.updateTopic(id, request, email);
+
+        return ResponseEntity.ok(new TopicDetailDTO(topic));
     }
-
-
-
 
 
 
