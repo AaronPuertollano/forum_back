@@ -73,6 +73,29 @@ public class TopicController {
         return ResponseEntity.ok(new ReplyDTO(reply));
     }
 
+    @DeleteMapping("/{topicId}/replies/{replyId}")
+    public ResponseEntity<Boolean> deleteReply(
+            @PathVariable Long topicId,
+            @PathVariable Long replyId,
+            HttpServletRequest httpRequest) {
 
+        String email = (String) httpRequest.getAttribute("email");
+
+        boolean deleted = replyService.deleteReply(topicId, replyId, email);
+
+        return ResponseEntity.ok(deleted);
+    }
+
+    @PutMapping("/{topicId}/replies/{replyId}")
+    public ResponseEntity<ReplyDTO> updateReply(
+            @PathVariable Long topicId,
+            @PathVariable Long replyId,
+            @RequestBody UpdateReplyDTO request,
+            HttpServletRequest httpRequest) {
+
+        Reply updatedReply = replyService.updateReply(topicId, replyId, request);
+
+        return ResponseEntity.ok(new ReplyDTO(updatedReply));
+    }
 
 }

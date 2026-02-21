@@ -1,11 +1,13 @@
 package com.esliceu.Myforum.dto;
 
 import com.esliceu.Myforum.model.Reply;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
 
 public class ReplyDTO {
 
+    @JsonProperty("_id")
     private Long id;
     private String content;
     private Long topic;
@@ -21,6 +23,7 @@ public class ReplyDTO {
         this.createdAt = reply.getCreatedAt();
         this.updatedAt = reply.getUpdatedAt();
     }
+
 
     public Long getId() {
         return id;
@@ -70,5 +73,6 @@ public class ReplyDTO {
         this.updatedAt = updatedAt;
     }
 
-    // getters
 }
+
+
