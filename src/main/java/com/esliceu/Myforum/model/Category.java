@@ -17,11 +17,7 @@ public class Category {
     private String description;
     private String slug;
     private String color;
-
-    @ElementCollection
     private List<String> moderators = new ArrayList<>();
-
-    // getters y setters
 
     public Long getId() {
         return id;
