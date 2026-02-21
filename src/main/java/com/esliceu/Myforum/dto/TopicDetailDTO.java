@@ -25,8 +25,8 @@ public class TopicDetailDTO {
     @JsonProperty("__v")
     private int version = 0;
 
-    private List<Object> replies = new ArrayList<>();
-    private Object numberOfReplies = null;
+    private List<ReplyDTO> replies = new ArrayList<>();
+    private Object numberOfReplies;
 
     public TopicDetailDTO(Topic topic) {
         this.id = topic.getId();
@@ -37,6 +37,12 @@ public class TopicDetailDTO {
         this.user = new UserDTO(topic.getUser());
         this.createdAt = topic.getCreatedAt();
         this.updatedAt = topic.getUpdatedAt();
+        this.replies = topic.getReplies()
+                .stream()
+                .map(ReplyDTO::new)
+                .toList();
+
+        this.numberOfReplies = this.replies.size();
     }
 
     public Long getId() { return id; }
@@ -50,7 +56,8 @@ public class TopicDetailDTO {
     public int getVersion() { return version; }
     public Object getNumberOfReplies() { return numberOfReplies; }
 
-    public List<Object> getReplies() {
+    public List<ReplyDTO> getReplies() {
         return replies;
     }
+
 }

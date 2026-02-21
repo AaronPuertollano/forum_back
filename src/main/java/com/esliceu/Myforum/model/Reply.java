@@ -3,34 +3,22 @@ package com.esliceu.Myforum.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-@Table(name = "topics")
-public class Topic {
+public class Reply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
-
-    @Column(columnDefinition = "TEXT")
     private String content;
 
-    private int views = 0;
+    @ManyToOne
+    @JoinColumn(name = "topic_id")
+    private Topic topic;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
-
-    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reply> replies = new ArrayList<>();
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -54,14 +42,6 @@ public class Topic {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getContent() {
         return content;
     }
@@ -70,20 +50,12 @@ public class Topic {
         this.content = content;
     }
 
-    public int getViews() {
-        return views;
+    public Topic getTopic() {
+        return topic;
     }
 
-    public void setViews(int views) {
-        this.views = views;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setTopic(Topic topic) {
+        this.topic = topic;
     }
 
     public User getUser() {
@@ -110,12 +82,5 @@ public class Topic {
         this.updatedAt = updatedAt;
     }
 
-    public List<Reply> getReplies() {
-        return replies;
-    }
-
-    public void setReplies(List<Reply> replies) {
-        this.replies = replies;
-    }
+    // getters y setters
 }
-

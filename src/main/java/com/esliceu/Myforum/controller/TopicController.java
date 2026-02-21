@@ -3,7 +3,9 @@ package com.esliceu.Myforum.controller;
 
 import com.esliceu.Myforum.dto.*;
 import com.esliceu.Myforum.model.Category;
+import com.esliceu.Myforum.model.Reply;
 import com.esliceu.Myforum.model.Topic;
+import com.esliceu.Myforum.service.ReplyService;
 import com.esliceu.Myforum.service.TopicService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,9 @@ public class TopicController {
 
     @Autowired
     TopicService topicService;
+
+    @Autowired
+    ReplyService replyService;
 
     @PostMapping
     public ResponseEntity<TopicResponseDTO> createTopic(
@@ -55,6 +60,17 @@ public class TopicController {
         Topic topic = topicService.updateTopic(id, request, email);
 
         return ResponseEntity.ok(new TopicDetailDTO(topic));
+    }
+
+    @PostMapping("/{id}/replies")
+    public ResponseEntity<ReplyDTO> createReply(@PathVariable Long id, @RequestBody CreateReplyDTO request,
+            HttpServletRequest httpRequest) {
+
+        String email = (String) httpRequest.getAttribute("email");
+
+        Reply reply = replyService.createReply(id, request, email);
+
+        return ResponseEntity.ok(new ReplyDTO(reply));
     }
 
 
